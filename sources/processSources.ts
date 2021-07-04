@@ -64,8 +64,10 @@ export function processSources(sources: Array<Source>) {
       if (definition.name?.kind !== `Name`)
         continue;
 
+      // The leading 'X' in front of the hash is to prevent graphql-code-generator
+      // from accidentally uppercasing the first letter of the hash.
       const initialName = definition.name.value;
-      const uniqueName = `${initialName}_${hash}_`;
+      const uniqueName = `${initialName}_X${hash}_`;
       Object.assign(definition.name, {value: uniqueName});
 
       operations.push({

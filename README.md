@@ -15,7 +15,7 @@ This package is a [preset](https://www.graphql-code-generator.com/docs/presets/p
 1. Install the dependencies:
 
 ```
-yarn add -D graphql-code-generator graphql-typescript-integration
+yarn add -D graphql-code-generator graphql-typescript-integration @graphql-typed-document-node/core
 ```
 
 2. Setup your code generator in `codegen.yml`:
@@ -31,8 +31,6 @@ pluckConfig:
 generates:
   ./folder/where/to/generate/types/:
     preset: graphql-typescript-integration
-    presetConfig:
-      packageName: "@app/gql"
     # Needed to workaround a graphql-code-generator limitation
     plugins:
       - graphql-typescript-integration/empty

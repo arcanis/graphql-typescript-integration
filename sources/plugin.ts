@@ -38,6 +38,8 @@ function getDocumentRegistryChunk(sourcesWithOperations: Array<SourceWithOperati
 function getGqlOverloadChunk(sourcesWithOperations: Array<SourceWithOperations>) {
   const lines: Array<string> = [];
 
+  // We intentionally don't use a <T extends keyof typeof documents> generic, because TS
+  // would print very long `gql` function signatures (duplicating the source).
   for (const {source: {rawSDL}} of sourcesWithOperations)
     lines.push(`export function gql(source: ${JSON.stringify(rawSDL!)}): (typeof documents)[${JSON.stringify(rawSDL!)}];\n`);
 

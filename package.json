@@ -1,6 +1,6 @@
 {
   "name": "graphql-typescript-integration",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "./sources/preset.ts",
   "dependencies": {
     "@graphql-codegen/add": "^2.0.2",

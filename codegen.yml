@@ -1,0 +1,13 @@
+schema: ./schema.graphql
+documents: './demo/**/*.ts'
+
+require:
+  - ts-node/register/transpile-only
+
+pluckConfig:
+  skipIndent: true
+
+generates:
+  ./demo/gql/:
+    preset: graphql-typescript-integration
+    plugins: [graphql-typescript-integration/empty]

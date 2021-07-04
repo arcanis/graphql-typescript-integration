@@ -11,9 +11,6 @@ export const preset: Types.OutputPreset<{
   packageName: string;
 }> = {
   buildGeneratesSection: options => {
-    if (!options?.config?.pluckConfig?.skipIndent)
-      throw new Error(`Configuration error: When using graphql-typescript-integration, you must set the "skipIndent" setting to true inside the "pluckConfig" root field.`);
-
     const packageName = options.presetConfig.packageName ?? `@app/gql`;
 
     const sourcesWithOperations = processSources(options.documents);
@@ -28,7 +25,7 @@ export const preset: Types.OutputPreset<{
       [`gen-dts`]: dtsGenPlugin,
     };
 
-    const plugins = [
+    const plugins: Array<Types.ConfiguredPlugin> = [
       {[`add`]: {content: `/* eslint-disable */`}},
       {[`typescript`]: {}},
       {[`typescript-operations`]: {}},
@@ -36,7 +33,8 @@ export const preset: Types.OutputPreset<{
       ...options.plugins,
     ];
 
-    const genDtsPlugins = [
+    const genDtsPlugins: Array<Types.ConfiguredPlugin> = [
+      {[`add`]: {content: `/* eslint-disable */`}},
       {[`gen-dts`]: {sourcesWithOperations, packageName}},
     ];
 

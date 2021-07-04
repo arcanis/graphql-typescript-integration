@@ -11,7 +11,7 @@ export const plugin: PluginFunction<{
   `\n`,
   ...getGqlOverloadChunk(sourcesWithOperations),
   `\n`,
-  `export function gql(source: string): unknown;`,
+  `export function gql(source: string): unknown;\n`,
   `export function gql(source: string) {\n`,
   `  return (documents as any)[source] ?? {};\n`,
   `}\n`,

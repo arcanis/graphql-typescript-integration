@@ -64,13 +64,15 @@ This would let you do `import {gql} from '@app/gql'` from anywhere in your codeb
 
 ## Limitations
 
-- You can't use fragments. I don't use them at the moment, so I haven't looked into them. However, given that queries are properly typed, you'll know when you're passing incomplete data around, which will let you add the missing fields to your queries. Not exactly like fragments, but still a decent workaround at no cost.
+- You can't use fragments. I don't use them at the moment, so I haven't looked into them. However, given that queries are properly typed, you'll know when you're passing incomplete data around, which will let you add the missing fields to your queries. Not exactly like fragments, but still a decent workaround.
 
-- You must use the `const query = gql(...);` syntax (not the ``const query = gql`...`;`` one). This is because TypeScript isn't currently smart enough to pass forward tagged template parameters as their literal types (https://github.com/microsoft/TypeScript/issues/29432).
+- You must use the `const query = gql(...);` syntax (not the typical tagged template ``const query = gql`...`;`` one). This is because TypeScript isn't currently smart enough to forward tagged template parameters as their literal types (https://github.com/microsoft/TypeScript/issues/29432).
 
-- You should indicate `#graphql` right after opening the GraphQL source literal (right after the opening quote, before even any line return). This is because otherwise vscode-graphql won't recognize the string as being GraphQL (they don't detect `gql` statements when used as regular function calls, unlike graphql-code-generator).
+- You should indicate `#graphql` right after opening the GraphQL source literal (right after the opening quote, before even any line return). This is because otherwise vscode-graphql won't recognize the string as being GraphQL and won't highlight it (they don't detect `gql` statements when used as regular function calls, unlike graphql-code-generator).
 
-- You can only have a single `gql(...)` function call per file. This is because `graphql-tag-pluck`, the tool extracting these calls, concatenates all documents from a single file into a single one. As a result we end up generating a `gql` overload for the composite query, instead of one for each individual document.
+- A contrario, you must **not** use the `/* GraphQL */` magic comment inside the `gql(...)` function call. This is because [graphql-tag-pluck](https://www.graphql-tools.com/docs/graphql-tag-pluck/), the tool extracting these calls, has a bug and will register the document twice - which brings us to the final limitation:
+
+- You can only have a single `gql(...)` function call per file. This is because graphql-tag-pluck concatenates all documents from a single file into a single one, with no way to split them back. As a result we end up generating a `gql` overload for the composite query, instead of one for each individual document.
 
 ## License (MIT)
 

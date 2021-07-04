@@ -1,6 +1,6 @@
 {
   "name": "graphql-typescript-integration",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "./sources/preset.ts",
   "dependencies": {
     "@graphql-codegen/add": "^2.0.2",
@@ -28,6 +28,10 @@
     "prepack": "rm -rf lib && rollup -c",
     "postpack": "rm -rf lib"
   },
+  "files": [
+    "lib",
+    "empty.js"
+  ],
   "publishConfig": {
     "main": "./lib/preset.js"
   }

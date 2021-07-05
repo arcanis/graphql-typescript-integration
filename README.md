@@ -4,11 +4,29 @@ This package is a [preset](https://www.graphql-code-generator.com/docs/presets/p
 
 ## Features
 
-- You can directly use the result of the `gql(...)` function call, which will be correctly typed and will return the compiled documents.
+- You can (should) keep your GraphQL queries and mutations within your `.tsx` files, close from the components that will use them. However, unlike typical GraphQL type generations, you don't need to import the typed operations - they'll be transparently returned by the `gql(...)` function calls.
 
-- You can use the same query name in different files. Graphtype will automatically hash and deduplicate them.
+- You don't have to bother using unique query and mutation names for each file; the preset will automatically hash them if needed. You can still share specific queries with multiple files by simply exporting it from a file that can be imported from (like you would with any other helper function).
 
 - Integrated with graphql-code-generator, so you can generate other files, benefit from watch mode, etc.
+
+## Why not [something else]?
+
+I was a bit frustrated to have to import my typed GraphQL hooks from another file, and to leave my `gql` definitions dangling:
+
+```ts
+import {useFoo} from './generated-hooks';
+
+gql`
+  query Foo {
+    bar
+  }
+`;
+```
+
+I also didn't like that each file needed to have its own unique query name - it felt like a step backward from encapsulation.
+
+Finally, I wanted something relatively easy to setup and maintain because I don't have that much time 😛
 
 ## Install
 

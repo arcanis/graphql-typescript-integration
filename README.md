@@ -10,7 +10,7 @@ This package is a [preset](https://www.graphql-code-generator.com/docs/presets/p
 
 - Integrated with graphql-code-generator, so you can generate other files, benefit from watch mode, etc.
 
-## Why not [something else]?
+## Why?
 
 I was a bit frustrated to have to import my typed GraphQL hooks from another file, and to leave my `gql` definitions dangling:
 

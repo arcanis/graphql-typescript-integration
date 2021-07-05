@@ -4,7 +4,7 @@ This package is a [preset](https://www.graphql-code-generator.com/docs/presets/p
 
 ## Features
 
-- You can (should) keep your GraphQL queries and mutations within your `.tsx` files, close from the components that will use them. However, unlike typical GraphQL type generations, you don't need to import the typed operations - they'll be transparently returned by the `gql(...)` function calls.
+- You can (should) keep your GraphQL queries and mutations within your `.tsx` files, close from the components that will use them. However, unlike typical GraphQL type generations, you don't need to separately import the typed operations - they'll be transparently returned by the `gql(...)` function calls.
 
 - You don't have to bother using unique query and mutation names for each file; the preset will automatically hash them if needed. You can still share specific queries with multiple files by simply exporting it from a file that can be imported from (like you would with any other helper function).
 

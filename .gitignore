@@ -1,5 +1,4 @@
 .yarn/*
 !.yarn/releases
 .pnp.*
-/demo/gql
 /lib

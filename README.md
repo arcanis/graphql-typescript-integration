@@ -34,7 +34,7 @@ const {Foo} = gql(`#graphql
 `);
 ```
 
-I also didn't like that each file needed to have its own unique query name - it felt like a step backward from encapsulation. This is addressed by hashing the operation names under the hood.
+I also didn't like that each operation had to be uniquely named not only within the same file, but also within the whole app - it felt like a step backward from encapsulation. This is addressed by hashing the operation names under the hood (cf the [generated output](https://github.com/arcanis/graphql-typescript-integration/blob/19a2e6b1f8949f12ab6e5120e002a30f79dbda41/demo/gql/index.ts#L4-L9)).
 
 Finally, I wanted something relatively easy to setup and maintain because I don't have that much time 😛
 

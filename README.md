@@ -24,7 +24,17 @@ gql`
 `;
 ```
 
-I also didn't like that each file needed to have its own unique query name - it felt like a step backward from encapsulation.
+So this tool lets you write the same thing, but in a single statement:
+
+```ts
+const {Foo} = gql(`#graphql
+  query Foo {
+    bar
+  }
+`);
+```
+
+I also didn't like that each file needed to have its own unique query name - it felt like a step backward from encapsulation. This is addressed by hashing the operation names under the hood.
 
 Finally, I wanted something relatively easy to setup and maintain because I don't have that much time 😛
 
@@ -61,9 +71,15 @@ You can import the `gql` function from the generated folder. For instance, assum
 ```ts
 import {gql} from './gql';
 
-const {Foo} = gql(`#graphql
-  query Foo {
+const {GetTweets, CreateTweet} = gql(`#graphql
+  query GetTweets {
     Tweets {
+      id
+    }
+  }
+
+  mutation CreateTweet {
+    CreateTweet(body: "Hello") {
       id
     }
   }
@@ -88,7 +104,7 @@ This would let you do `import {gql} from '@app/gql'` from anywhere in your codeb
 
 - A contrario, you must **not** use the `/* GraphQL */` magic comment inside the `gql(...)` function call. This is because [graphql-tag-pluck](https://www.graphql-tools.com/docs/graphql-tag-pluck/), the tool extracting these calls, has a bug and will register the document twice - which brings us to the final limitation:
 
-- You can only have a single `gql(...)` function call per file. This is because graphql-tag-pluck concatenates all documents from a single file into a single one, with no way to split them back. As a result we end up generating a `gql` overload for the composite query, instead of one for each individual document.
+- You can only have a single `gql(...)` function call per file. This is because graphql-tag-pluck concatenates all documents from a single file into a single one, with no way to split them back. As a result we end up generating a `gql` overload for the composite query, instead of one for each individual document. It's however not a huge deal - just define multiple queries / mutations within the same `gql` call, and use destructuring to access them individually (cf example in the "Usage" section).
 
 ## License (MIT)
 

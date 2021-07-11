@@ -2,6 +2,11 @@ import {PluginFunction}       from '@graphql-codegen/plugin-helpers';
 
 import {SourceWithOperations} from './processSources';
 
+const SUFFIXES = new Map([
+  [`OperationDefinition`, `Document`],
+  [`FragmentDefinition`, `FragmentDoc`],
+] as const);
+
 export const plugin: PluginFunction<{
   sourcesWithOperations: Array<SourceWithOperations>;
 }> = (schema, sources, {sourcesWithOperations}) => [
@@ -24,8 +29,9 @@ function getDocumentRegistryChunk(sourcesWithOperations: Array<SourceWithOperati
   for (const {source: {rawSDL}, operations} of sourcesWithOperations) {
     lines.push(`  ${JSON.stringify(rawSDL!)}: {\n`);
 
-    for (const {initialName, uniqueName} of operations)
-      lines.push(`    ${initialName}: graphql.${uniqueName}Document,\n`);
+    for (const {initialName, uniqueName, definition} of operations)
+      lines.push(`    ${initialName}: graphql.${uniqueName}${SUFFIXES.get(definition.kind)},\n`);
+
 
     lines.push(`  },\n`);
   }

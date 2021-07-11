@@ -6,7 +6,7 @@ This package is a [preset](https://www.graphql-code-generator.com/docs/presets/p
 
 - You can (should) keep your GraphQL queries and mutations within your `.tsx` files, close from the components that will use them. However, unlike typical GraphQL type generations, you don't need to separately import the typed operations - they'll be transparently returned by the `gql(...)` function calls.
 
-- You don't have to bother using unique query and mutation names for each file; the preset will automatically hash them if needed. You can still share specific queries with multiple files by simply exporting it from a file that can be imported from (like you would with any other helper function).
+- You don't have to bother using unique fragment, query, and mutation names for each file; the preset will automatically hash them if needed. You can still share specific queries with multiple files by simply exporting it from a file that can be imported from (like you would with any other helper function).
 
 - Integrated with graphql-code-generator, so you can generate other files, benefit from watch mode, etc.
 
@@ -96,7 +96,9 @@ This would let you do `import {gql} from '@app/gql'` from anywhere in your codeb
 
 ## Limitations
 
-- You can't use fragments. I don't use them at the moment, so I haven't looked into them. However, given that queries are properly typed, you'll know when you're passing incomplete data around, which will let you add the missing fields to your queries. Not exactly like fragments, but still a decent workaround.
+- ~~You can't use fragments. I don't use them at the moment, so I haven't looked into them. However, given that queries are properly typed, you'll know when you're passing incomplete data around, which will let you add the missing fields to your queries. Not exactly like fragments, but still a decent workaround.~~
+
+  - You can now use fragments, as long as they're in the same file as the operations that use them. Note that this limitation is temporary, it's just that I haven't needed to use cross-files fragment so far.
 
 - You must use the `const query = gql(...);` syntax (not the typical tagged template ``const query = gql`...`;`` one). This is because TypeScript isn't currently smart enough to forward tagged template parameters as their literal types (https://github.com/microsoft/TypeScript/issues/29432).
 

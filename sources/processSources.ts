@@ -1,11 +1,11 @@
-import type {Source}             from '@graphql-tools/utils';
-import crypto                    from 'crypto';
-import {OperationDefinitionNode} from 'graphql';
+import type {Source}                                            from '@graphql-tools/utils';
+import crypto                                                   from 'crypto';
+import {FragmentDefinitionNode, OperationDefinitionNode, visit} from 'graphql';
 
 export type Operation = {
   initialName: string;
   uniqueName: string;
-  definition: OperationDefinitionNode;
+  definition: OperationDefinitionNode | FragmentDefinitionNode;
 };
 
 export type SourceWithOperations = {
@@ -55,10 +55,17 @@ export function processSources(sources: Array<Source>) {
 
   for (const [hash, source] of subHashes) {
     const {document} = source;
-    const operations: Array<Operation> = [];
+    if (!document)
+      continue;
 
-    for (const definition of document?.definitions ?? []) {
-      if (definition?.kind !== `OperationDefinition`)
+    const operations: Array<Operation> = [];
+    const remappedFragments = new Map<string, string>();
+
+    for (const definition of document.definitions ?? []) {
+      if (!definition)
+        continue;
+
+      if (definition.kind !== `OperationDefinition` && definition.kind !== `FragmentDefinition`)
         continue;
 
       if (definition.name?.kind !== `Name`)
@@ -70,6 +77,9 @@ export function processSources(sources: Array<Source>) {
       const uniqueName = `${initialName}_X${hash}_`;
       Object.assign(definition.name, {value: uniqueName});
 
+      if (definition.kind === `FragmentDefinition`)
+        remappedFragments.set(initialName, uniqueName);
+
       operations.push({
         initialName,
         uniqueName,
@@ -79,6 +89,17 @@ export function processSources(sources: Array<Source>) {
 
     if (operations.length === 0)
       continue;
+
+    visit(document!, {
+      FragmentSpread: node => {
+        const initialName = node.name.value;
+        const uniqueName = remappedFragments.get(initialName);
+
+        if (typeof uniqueName !== `undefined`) {
+          Object.assign(node.name, {value: uniqueName});
+        }
+      },
+    });
 
     sourcesWithOperations.push({
       source,

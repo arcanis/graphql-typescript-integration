@@ -125,6 +125,7 @@ export type Foo_Xc_Query = (
   { __typename?: 'Query' }
   & { Tweets?: Maybe<Array<Maybe<(
     { __typename?: 'Tweet' }
+    & Pick<Tweet, 'id'>
     & TweetFragment_Xc_Fragment
   )>>> }
 );
@@ -136,11 +137,11 @@ export type Bar_Xc_Query = (
   { __typename?: 'Query' }
   & { Tweets?: Maybe<Array<Maybe<(
     { __typename?: 'Tweet' }
-    & Pick<Tweet, 'body'>
+    & Pick<Tweet, 'body' | 'id'>
     & TweetFragment_Xc_Fragment
   )>>> }
 );
 
-export const TweetFragment_Xc_FragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TweetFragment_Xc_"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tweet"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]} as unknown as DocumentNode<TweetFragment_Xc_Fragment, unknown>;
-export const Foo_Xc_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Foo_Xc_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TweetFragment_Xc_"}}]}}]}},...TweetFragment_Xc_FragmentDoc.definitions]} as unknown as DocumentNode<Foo_Xc_Query, Foo_Xc_QueryVariables>;
-export const Bar_Xc_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Bar_Xc_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TweetFragment_Xc_"}},{"kind":"Field","name":{"kind":"Name","value":"body"}}]}}]}},...TweetFragment_Xc_FragmentDoc.definitions]} as unknown as DocumentNode<Bar_Xc_Query, Bar_Xc_QueryVariables>;
+export const TweetFragment_Xc_FragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TweetFragment_Xc_"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tweet"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]} as unknown as DocumentNode<TweetFragment_Xc_Fragment, unknown>;
+export const Foo_Xc_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Foo_Xc_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TweetFragment_Xc_"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},...TweetFragment_Xc_FragmentDoc.definitions]} as unknown as DocumentNode<Foo_Xc_Query, Foo_Xc_QueryVariables>;
+export const Bar_Xc_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Bar_Xc_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TweetFragment_Xc_"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},...TweetFragment_Xc_FragmentDoc.definitions]} as unknown as DocumentNode<Bar_Xc_Query, Bar_Xc_QueryVariables>;

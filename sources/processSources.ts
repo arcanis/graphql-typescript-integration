@@ -1,6 +1,6 @@
-import type {Source}                                            from '@graphql-tools/utils';
-import crypto                                                   from 'crypto';
-import {FragmentDefinitionNode, OperationDefinitionNode, visit} from 'graphql';
+import type {Source}                                                                                                                         from '@graphql-tools/utils';
+import crypto                                                                                                                                from 'crypto';
+import {DocumentNode, FragmentDefinitionNode, GraphQLObjectType, GraphQLSchema, OperationDefinitionNode, TypeInfo, visit, visitWithTypeInfo} from 'graphql';
 
 export type Operation = {
   initialName: string;
@@ -13,7 +13,12 @@ export type SourceWithOperations = {
   operations: Array<Operation>;
 };
 
-export function processSources(sources: Array<Source>) {
+type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+const makeWriteable = <T>(val: T): Writeable<T> => val as any;
+
+export function processSources(sources: Array<Source>, {schema}: {schema: GraphQLSchema}) {
+  const typeInfo = new TypeInfo(schema);
+
   const fullHashes = new Map<string, Source>();
   const filteredSources: Array<Source> = [];
 
@@ -75,7 +80,7 @@ export function processSources(sources: Array<Source>) {
       // from accidentally uppercasing the first letter of the hash.
       const initialName = definition.name.value;
       const uniqueName = `${initialName}_X${hash}_`;
-      Object.assign(definition.name, {value: uniqueName});
+      makeWriteable(definition.name).value = uniqueName;
 
       if (definition.kind === `FragmentDefinition`)
         remappedFragments.set(initialName, uniqueName);
@@ -90,16 +95,34 @@ export function processSources(sources: Array<Source>) {
     if (operations.length === 0)
       continue;
 
-    visit(document!, {
+    visit(document!, visitWithTypeInfo(typeInfo, {
+      SelectionSet: node => {
+        const type = typeInfo.getParentType();
+        if (!(type instanceof GraphQLObjectType))
+          return;
+
+        const fields = type.getFields();
+        if (!Object.prototype.hasOwnProperty.call(fields, `id`))
+          return;
+
+        makeWriteable(node.selections).push({
+          kind: `Field`,
+          name: {
+            kind: `Name`,
+            value: `id`,
+          },
+        });
+      },
+
       FragmentSpread: node => {
         const initialName = node.name.value;
         const uniqueName = remappedFragments.get(initialName);
 
         if (typeof uniqueName !== `undefined`) {
-          Object.assign(node.name, {value: uniqueName});
+          makeWriteable(node.name).value = uniqueName;
         }
       },
-    });
+    }));
 
     sourcesWithOperations.push({
       source,

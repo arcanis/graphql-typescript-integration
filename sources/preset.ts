@@ -11,9 +11,12 @@ export const preset: Types.OutputPreset<{
   packageName: string;
 }> = {
   buildGeneratesSection: options => {
+    if (!options.schemaAst)
+      throw new Error(`Missing schema AST`);
+
     const packageName = options.presetConfig.packageName ?? `@app/gql`;
 
-    const sourcesWithOperations = processSources(options.documents);
+    const sourcesWithOperations = processSources(options.documents, {schema: options.schemaAst});
     const sources = sourcesWithOperations.map(({source}) => source);
 
     const pluginMap = {

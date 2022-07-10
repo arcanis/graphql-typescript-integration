@@ -13,6 +13,13 @@ export type SourceWithOperations = {
   operations: Array<Operation>;
 };
 
+// Graphile automatically adds `id` fields to the top-level types
+const DISABLED_AUTO_ID_TYPES = new Set([
+  `Mutation`,
+  `Query`,
+  `Subscription`,
+]);
+
 type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 const makeWriteable = <T>(val: T): Writeable<T> => val as any;
 
@@ -99,6 +106,9 @@ export function processSources(sources: Array<Source>, {schema}: {schema: GraphQ
       SelectionSet: node => {
         const type = typeInfo.getParentType();
         if (!(type instanceof GraphQLObjectType))
+          return;
+
+        if (DISABLED_AUTO_ID_TYPES.has(type.name))
           return;
 
         const fields = type.getFields();

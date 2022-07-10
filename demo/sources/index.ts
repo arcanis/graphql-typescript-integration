@@ -2,7 +2,7 @@
 
 import {gql} from '@app/gql';
 
-const {Tweet, Foo, Bar} = gql(`#graphql
+const {NotFound, Foo, Bar} = gql(`#graphql
   fragment TweetFragment on Tweet {
     id
   }
@@ -16,6 +16,12 @@ const {Tweet, Foo, Bar} = gql(`#graphql
   query Bar {
     Tweets {
       ...TweetFragment
+      body
+    }
+  }
+
+  subscription TweetSubscription {
+    tweets {
       body
     }
   }

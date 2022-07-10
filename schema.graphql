@@ -50,3 +50,7 @@ type Mutation {
     deleteTweet(id: ID!): Tweet
     markTweetRead(id: ID!): Boolean
 }
+
+type Subscription {
+    tweets: Tweet
+}

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -14,7 +15,6 @@ export type Scalars = {
   Date: any;
   Url: any;
 };
-
 
 export type Meta = {
   __typename?: 'Meta';
@@ -30,7 +30,7 @@ export type Mutation = {
 
 
 export type MutationCreateTweetArgs = {
-  body?: Maybe<Scalars['String']>;
+  body?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -45,19 +45,24 @@ export type MutationMarkTweetReadArgs = {
 
 export type Notification = {
   __typename?: 'Notification';
-  id?: Maybe<Scalars['ID']>;
   date?: Maybe<Scalars['Date']>;
+  id?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  Notifications?: Maybe<Array<Maybe<Notification>>>;
+  NotificationsMeta?: Maybe<Meta>;
   Tweet?: Maybe<Tweet>;
   Tweets?: Maybe<Array<Maybe<Tweet>>>;
   TweetsMeta?: Maybe<Meta>;
   User?: Maybe<User>;
-  Notifications?: Maybe<Array<Maybe<Notification>>>;
-  NotificationsMeta?: Maybe<Meta>;
+};
+
+
+export type QueryNotificationsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -67,10 +72,10 @@ export type QueryTweetArgs = {
 
 
 export type QueryTweetsArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  skip?: Maybe<Scalars['Int']>;
-  sort_field?: Maybe<Scalars['String']>;
-  sort_order?: Maybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  sort_field?: InputMaybe<Scalars['String']>;
+  sort_order?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -78,70 +83,58 @@ export type QueryUserArgs = {
   id: Scalars['ID'];
 };
 
-
-export type QueryNotificationsArgs = {
-  limit?: Maybe<Scalars['Int']>;
-};
-
 export type Stat = {
   __typename?: 'Stat';
-  views?: Maybe<Scalars['Int']>;
   likes?: Maybe<Scalars['Int']>;
-  retweets?: Maybe<Scalars['Int']>;
   responses?: Maybe<Scalars['Int']>;
+  retweets?: Maybe<Scalars['Int']>;
+  views?: Maybe<Scalars['Int']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  tweets?: Maybe<Tweet>;
 };
 
 export type Tweet = {
   __typename?: 'Tweet';
-  id: Scalars['ID'];
-  body?: Maybe<Scalars['String']>;
-  date?: Maybe<Scalars['Date']>;
   Author?: Maybe<User>;
   Stats?: Maybe<Stat>;
+  body?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['Date']>;
+  id: Scalars['ID'];
 };
-
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['ID'];
-  username?: Maybe<Scalars['String']>;
+  avatar_url?: Maybe<Scalars['Url']>;
   first_name?: Maybe<Scalars['String']>;
-  last_name?: Maybe<Scalars['String']>;
   full_name?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  last_name?: Maybe<Scalars['String']>;
   /** @deprecated Field no longer supported */
   name?: Maybe<Scalars['String']>;
-  avatar_url?: Maybe<Scalars['Url']>;
+  username?: Maybe<Scalars['String']>;
 };
 
-export type TweetFragment_Xc_Fragment = (
-  { __typename?: 'Tweet' }
-  & Pick<Tweet, 'id'>
-);
+export type TweetFragment_X6_Fragment = { __typename?: 'Tweet', id: string };
 
-export type Foo_Xc_QueryVariables = Exact<{ [key: string]: never; }>;
+export type Foo_X6_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type Foo_Xc_Query = (
-  { __typename?: 'Query' }
-  & { Tweets?: Maybe<Array<Maybe<(
-    { __typename?: 'Tweet' }
-    & Pick<Tweet, 'id'>
-    & TweetFragment_Xc_Fragment
-  )>>> }
-);
+export type Foo_X6_Query = { __typename?: 'Query', Tweets?: Array<{ __typename?: 'Tweet', id: string } | null> | null };
 
-export type Bar_Xc_QueryVariables = Exact<{ [key: string]: never; }>;
+export type Bar_X6_QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type Bar_Xc_Query = (
-  { __typename?: 'Query' }
-  & { Tweets?: Maybe<Array<Maybe<(
-    { __typename?: 'Tweet' }
-    & Pick<Tweet, 'body' | 'id'>
-    & TweetFragment_Xc_Fragment
-  )>>> }
-);
+export type Bar_X6_Query = { __typename?: 'Query', Tweets?: Array<{ __typename?: 'Tweet', body?: string | null, id: string } | null> | null };
 
-export const TweetFragment_Xc_FragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TweetFragment_Xc_"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tweet"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]} as unknown as DocumentNode<TweetFragment_Xc_Fragment, unknown>;
-export const Foo_Xc_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Foo_Xc_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TweetFragment_Xc_"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},...TweetFragment_Xc_FragmentDoc.definitions]} as unknown as DocumentNode<Foo_Xc_Query, Foo_Xc_QueryVariables>;
-export const Bar_Xc_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Bar_Xc_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TweetFragment_Xc_"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},...TweetFragment_Xc_FragmentDoc.definitions]} as unknown as DocumentNode<Bar_Xc_Query, Bar_Xc_QueryVariables>;
+export type TweetSubscription_X6_SubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TweetSubscription_X6_Subscription = { __typename?: 'Subscription', tweets?: { __typename?: 'Tweet', body?: string | null, id: string } | null };
+
+export const TweetFragment_X6_FragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TweetFragment_X6_"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Tweet"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]} as unknown as DocumentNode<TweetFragment_X6_Fragment, unknown>;
+export const Foo_X6_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Foo_X6_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TweetFragment_X6_"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},...TweetFragment_X6_FragmentDoc.definitions]} as unknown as DocumentNode<Foo_X6_Query, Foo_X6_QueryVariables>;
+export const Bar_X6_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Bar_X6_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TweetFragment_X6_"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},...TweetFragment_X6_FragmentDoc.definitions]} as unknown as DocumentNode<Bar_X6_Query, Bar_X6_QueryVariables>;
+export const TweetSubscription_X6_Document = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"TweetSubscription_X6_"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tweets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<TweetSubscription_X6_Subscription, TweetSubscription_X6_SubscriptionVariables>;
